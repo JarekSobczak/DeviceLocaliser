@@ -11,8 +11,8 @@ public class LocationController {
 
     private RawDBLocationService service;
 
-    public LocationController() throws IOException {
-        service=new RawDBLocationService();
+    public LocationController(DataBaseService dataBaseService) throws IOException {
+        service=new RawDBLocationService(dataBaseService);
     }
 
     @PostMapping("/location")

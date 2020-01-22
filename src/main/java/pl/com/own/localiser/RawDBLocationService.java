@@ -4,25 +4,25 @@ package pl.com.own.localiser;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 
-
+@Service
 public class RawDBLocationService {
 
-    private DatabaseReader databaseReader;
+    private DataBaseService service;
 
-    public RawDBLocationService() throws IOException {
-        File database = new File("ścieżka do pliku z bazą lokalizacji ip:GeoLite2-City - do ściągnięcia z sieci");
-        databaseReader = new DatabaseReader.Builder(database).build();
+    public RawDBLocationService(DataBaseService dataBaseService) throws IOException {
+        this.service=dataBaseService;
     }
 
     public GeoIP getLocation(String ip)
             throws IOException, GeoIp2Exception {
         InetAddress ipAddress = InetAddress.getByName(ip);
-        CityResponse response = databaseReader.city(ipAddress);
+        CityResponse response = service.getDatabaseReader().city(ipAddress);
 
         String cityName = response.getCity().getName();
         String latitude = response.getLocation().getLatitude().toString();
